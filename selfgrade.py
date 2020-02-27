@@ -24,6 +24,11 @@ alphs = "abcdefghijklmnopqrstuvwxyz"
 def printline():
     print("-" * 30)
 
+def finish(f=None):
+    if f != None:
+        f.close()
+    exit()
+
 
 
 # Welcome Header
@@ -40,7 +45,7 @@ try:
     qns = int(qns)
 except:
     print("Please enter an integer")
-    exit()
+    finish()
 
 parts = [input("Largest part in qn " + str(i + 1) + ": ") for i in range(qns)]
 
@@ -48,10 +53,10 @@ try:
     for i in range(qns):
         parts[i] = parts[i].lower()
         if parts[i] not in alphs:
-            print("Please enter an alphabet a-z")
+            raise Exception
 except:
     print("Please enter an alphabet a-z")
-    exit()
+    finish()
 
 
 
@@ -70,7 +75,7 @@ if enable_help_text:
 
 
 
-# Open file and start writing to it
+# Open file and write to it
 f = open("self_grades.json", "w")
 f.write("{")
 
@@ -88,11 +93,11 @@ for i in range(qns):
         else:
             try:
                 int(data[0])
+                f.write(data[0] + '","' + qn_id + '_text":"' + data[2:] + '",')
             except:
                 printline()
                 print("Please follow the prescribed format")
-                exit()
-            f.write(data[0] + '","' + qn_id + '_text":"' + data[2:] + '",')
+                finish(f)
 
 printline()
 printline_after = False
